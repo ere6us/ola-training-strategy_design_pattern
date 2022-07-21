@@ -16,6 +16,10 @@ interface Flyable{
     void fly();
 }
 
+interface Attackable{
+    void attack();
+}
+
 class CanFly implements Flyable{
 
     @Override
@@ -40,11 +44,32 @@ class CanFlyWithJet implements Flyable{
     }
 }
 
+class AttackWithHands implements Attackable{
+
+    @Override
+    public void attack() {
+        System.out.println("Attacking with my dhai kilo ka haath.");
+    }
+}
+
+class AttackWithKnife implements Attackable{
+
+    @Override
+    public void attack() {
+        System.out.println("Attacking with knife.");
+    }
+}
+
 abstract class Player{
     Flyable flyable;
+    Attackable attackable;
 
     public void setFlyable(Flyable flyable) {
         this.flyable = flyable;
+    }
+
+    public void setAttackable(Attackable attackable) {
+        this.attackable = attackable;
     }
 
     public void eat()   {
@@ -60,11 +85,16 @@ abstract class Player{
     public void performFly()    {
         flyable.fly(); //This is encapsulation.
     }
+
+    public void performAttack() {
+        attackable.attack();
+    }
 }
 
 class Alex extends Player{
-    Alex(Flyable flyable)  {
+    Alex(Flyable flyable, Attackable attackable)  {
         super.flyable = flyable;
+        super.attackable = attackable;
     }
 
     public void display()   {
@@ -73,8 +103,9 @@ class Alex extends Player{
 }
 
 class Sam extends Player{
-    Sam(Flyable flyable)  {
+    Sam(Flyable flyable, Attackable attackable)  {
         super.flyable = flyable;
+        super.attackable = attackable;
     }
 
     public void display()   {
@@ -83,8 +114,9 @@ class Sam extends Player{
 }
 
 class Gaitonde extends Player{
-    Gaitonde(Flyable flyable)   {
+    Gaitonde(Flyable flyable, Attackable attackable)   {
         super.flyable = flyable;
+        super.attackable = attackable;
     }
 
     public void display()   {
@@ -94,14 +126,17 @@ class Gaitonde extends Player{
 
 public class Demo {
     public static void main(String[] args) {
-        Player player = new Alex(new CantFly());
+        Player player = new Alex(new CantFly(), new AttackWithHands());
         player.display();
         player.performFly();
-        player = new Sam(new CanFly());
+        player.performAttack();
+        player = new Sam(new CanFly(), new AttackWithHands());
         player.display();
         player.performFly();
-        player = new Gaitonde(new CanFlyWithJet());
+        player.performAttack();
+        player = new Gaitonde(new CanFlyWithJet(), new AttackWithKnife());
         player.display();
         player.performFly();
+        player.performAttack();
     }
 }
